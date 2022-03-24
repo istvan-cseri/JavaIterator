@@ -58,7 +58,7 @@ class Main {
         public void run() {
             try {
                 boolean take = true;
-                System.out.println("Starting thread1");
+                System.out.println(String.format("Thread %d Starting thread1", Thread.currentThread().getId()));
                 Iterator iter = new Iterator(root);
                 while (iter.hasMoreElements()) {
                     if (take) {
@@ -68,7 +68,7 @@ class Main {
                         }
                     }
                     Node n = (Node)iter.nextElement();
-                    System.out.println(String.format("THREAD1: %d", n.id));
+                    System.out.println(String.format("Thread %d after nextElement", Thread.currentThread().getId(), n.id));
                     response1.add(n);
                 }
                 System.out.println("End thread1");

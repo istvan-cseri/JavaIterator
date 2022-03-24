@@ -20,7 +20,7 @@ public class Iterator implements Enumerator {
     public Object nextElement() {
         Node next = nextNode;
         Lock lock = next.takeRead();
-        System.out.println(String.format("Locking node %d", next.id));
+        System.out.println(String.format("Thread %d Locking node %d", Thread.currentThread().getId(), next.id));
         lock.lock();
         if (nextNode.children.size() > 0) {
             nextNode = nextNode.children.get(0);
@@ -28,7 +28,7 @@ public class Iterator implements Enumerator {
             return next;
         }
         else {
-            System.out.println(String.format("Un-locking node %d", next.id));
+            System.out.println(String.format("Thread %d Un-locking node %d", Thread.currentThread().getId(), next.id));
             lock.unlock();
         }
 
@@ -41,7 +41,7 @@ public class Iterator implements Enumerator {
                 return next;
             }
             else {
-                System.out.println(String.format("Un-locking node %d", nextNode.id));
+                System.out.println(String.format("Thread %d Un-locking node %d", Thread.currentThread().getId(), nextNode.id));
                 nextNode.takeRead().unlock();
             }
         }
@@ -54,9 +54,10 @@ public class Iterator implements Enumerator {
      * @param n the Node to delete
      */
     public void delete(Node n) {
-//        Lock lock = n.parent.takeWrite();
+        Lock lock = n.parent.takeWrite();
+        System.out.println(String.format("Thread %d WRITE locking node %d", Thread.currentThread().getId(), nextNode.id));
         n.parent.children.remove(n);
         n.parent = null;
-//        lock.unlock();
+        lock.unlock();
     }
 }
