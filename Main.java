@@ -88,7 +88,7 @@ class Main {
                     Node n = (Node)iter.nextElement();
                     if (n.id == 2) {
                         Integer i = send2.take();
-//                        iter.delete(n);
+                        iter.delete(n);
                         response2.add(n);
                         System.out.println(String.format("THREAD2: %d", n.id));
                     }

@@ -35,9 +35,6 @@ public class Iterator implements Enumerator {
         while (!path.empty()) {
             int ordinal = path.pop();
             nextNode = nextNode.parent;
-            Lock lock1 = nextNode.takeRead();
-            System.out.println(String.format("Locking node %d", nextNode.id));
-            lock1.lock();
             if (ordinal + 1 < nextNode.children.size()) {
                 path.push(ordinal + 1);
                 nextNode = nextNode.children.get(ordinal + 1);
@@ -45,7 +42,7 @@ public class Iterator implements Enumerator {
             }
             else {
                 System.out.println(String.format("Un-locking node %d", nextNode.id));
-                lock1.unlock();
+                nextNode.takeRead().unlock();
             }
         }
         nextNode = null;
